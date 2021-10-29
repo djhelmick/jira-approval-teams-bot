@@ -1,13 +1,21 @@
+using ApprovalBotAPI.Bots;
+using JiraClientLibrary;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ReferencesDbLibrary;
+using ReferencesDbLibrary.Data;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +34,10 @@ namespace ApprovalBotAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddTransient<IBot, ApprovalBot>();
+            services.AddScoped<IBotFrameworkHttpAdapter, ApprovalBotAdapter>();
+            services.AddSingleton<IDatabaseData, CosmosData>();
+            services.AddTransient<JiraClient>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
