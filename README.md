@@ -1,0 +1,2 @@
+# Jira Approval Teams Bot
+A Microsoft Teams bot that proactively notifies users when they a new approval request from Jira (Service Management). Users are able to approve or deny the request directly from the Teams conversation.
