@@ -98,6 +98,11 @@ namespace ApprovalBotAPI.Controllers
 
             var conversationReference = await _referencesDb.GetConversationReference(approverEmail);
 
+            if (conversationReference == null)
+            {
+
+            }
+
             await ((ApprovalBotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, async (
                 ITurnContext turnContext,
                 CancellationToken cancellationToken) =>

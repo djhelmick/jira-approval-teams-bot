@@ -22,7 +22,7 @@ namespace ApprovalBotAPI.Controllers
         }
 
         [HttpPost]
-        public async Task ProcessAsyncTask()
+        public async Task ProcessAsync()
         {
             await _adapter.ProcessAsync(Request, Response, _bot);
         }

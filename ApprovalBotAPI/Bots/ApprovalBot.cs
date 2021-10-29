@@ -29,6 +29,7 @@ namespace ApprovalBotAPI.Bots
             // Display typing dots while processing message
             await turnContext.SendActivityAsync(new Activity { Type = ActivityTypes.Typing }, cancellationToken);
 
+            var conv = turnContext.Activity.GetConversationReference();
             string receivedText = turnContext.Activity.Text?.ToLower().Trim();
 
             if (receivedText?.Split(" ")[0] == "approve")
@@ -59,6 +60,14 @@ namespace ApprovalBotAPI.Bots
             {
                 await turnContext.SendActivityAsync("I'm sorry, but I don't understand that command.");
             }
+        }
+
+        protected override async Task OnInstallationUpdateAddAsync(ITurnContext<IInstallationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+            var conversationReference = turnContext.Activity.GetConversationReference();
+            var member = await TeamsInfo.GetMemberAsync(turnContext, conversationReference.User.Id, cancellationToken);
+
+            await _referencesDb.AddConversationReference(member.Email, conversationReference);
         }
     }
 }
